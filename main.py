@@ -84,13 +84,17 @@ def run_bot():
 
 # ====== FLASK ENDPOINT ======
 @app.route("/")
+def index():
+    return "Bot is running!"
+
 def run_flask():
-    app.run(host="0.0.0.0", port=10000)
+    port = int(os.environ.get("PORT", 10000))  # default 10000 kalau lokal
+    app.run(host="0.0.0.0", port=port)
 
 if __name__ == "__main__":
     # thread utk spin
     threading.Thread(target=spin_loop, daemon=True).start()
-    # thread utk flask
+    # thread utk flask (hanya start sekali)
     threading.Thread(target=run_flask, daemon=True).start()
-    # telegram bot di main thread (AMAN)
+    # telegram bot di main thread
     run_bot()
